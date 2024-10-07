@@ -4,51 +4,46 @@
 
 /* BetButton.css */
 .button {
-    background-color: #3b82f6; /* Tailwind blue-500 */
-    border: 2px solid #000; /* Black border */
-    border-radius: 20px; /* Rounded corners */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transition effects */
-    cursor: pointer; /* Change cursor on hover */
+    background-color: #3b82f6; 
+    border: 2px solid #000; 
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    cursor: pointer; 
   }
   
   .button:hover {
-    background-color: #1e3a8a; /* Darker blue on hover */
-    transform: scale(1.05); /* Slightly increase size on hover */
+    background-color: #1e3a8a; 
+    transform: scale(1.05);
   }
   
   .bet-list {
-    background-color: #3b82f6; /* Tailwind blue-500 for the list background */
-    border-radius: 10px; /* Rounded corners for the list */
+    background-color: #3b82f6;
+    border-radius: 10px; 
   }
   
   .bet-item {
-    padding: 10px; /* Add padding to each item */
-    transition: background-color 0.3s ease; /* Transition for hover effect */
+    padding: 10px; 
+    transition: background-color 0.3s ease;
   }
   
   .bet-item:hover {
-    background-color: #1e3a8a; /* Change color on hover */
+    background-color: #1e3a8a;
   }
   
 
-  /* globals.css */
-
-/* Style for the button container */
 .bet-button {
-    position: relative; /* To position the glow effect */
-    display: inline-block; /* To enable hover effects */
-    border-radius: 10px; /* Rounded corners */
-    overflow: hidden; /* To hide overflow from shadow */
-    cursor: pointer; /* Change cursor on hover */
+    position: relative;
+    display: inline-block;
+    border-radius: 10px; 
+    overflow: hidden; 
+    cursor: pointer; 
   }
   
-  /* Glow effect for the button */
   .bet-button:hover {
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.8); /* Blue glow effect on hover */
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.8); 
   }
   
-  /* Adjustments for text */
   .bet-text {
-    transition: font-size 0.3s ease; /* Smooth transition for font size */
+    transition: font-size 0.3s ease; 
   }
   

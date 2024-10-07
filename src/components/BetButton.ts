@@ -1,78 +1,61 @@
 import * as PIXI from "pixi.js";
 
-// Define the BetButtonProps interface
 interface BetButtonProps {
-  bets: number[]; // Array of bet amounts
-  buttonWidth: number; // Width of the button
-  buttonHeight: number; // Height of the button
-  listWidth: number; // Width of the list
-  listHeight: number; // Height of the list
+  bets: number[]; 
+  buttonWidth: number; 
+  buttonHeight: number; 
+  listWidth: number; 
+  listHeight: number; 
 }
 
  export default class BetButton extends PIXI.Container {
-  private betText: PIXI.Text; // Text to display the current bet
-  public currentBet: number; // Current bet amount
-  private bets: number[]; // Available bets
-  private betList!: PIXI.Container; // Container for bet list
-  private listVisible: boolean; // Track visibility of the bet list
+  private betText: PIXI.Text; 
+  public currentBet: number; 
+  private bets: number[]; 
+  private betList!: PIXI.Container; 
+  private listVisible: boolean; 
 
   constructor(props: BetButtonProps) {
     super();
     this.bets = props.bets;
-    this.currentBet = this.bets[0]; // Set initial bet to the first one
-    this.listVisible = false; // Initially, the list is hidden
+    this.currentBet = this.bets[0]; 
+    this.listVisible = false;
 
-    // Create a stylized background for the button using Tailwind blue color
     const background = new PIXI.Graphics();
-    background.beginFill(0x3b82f6); // Tailwind blue-500
-    background.lineStyle(2, 0x000000, 1); // Black border
-    background.drawRoundedRect(0, 0, props.buttonWidth, props.buttonHeight, 20); // Rounded corners with increased radius
+    background.beginFill(0x3b82f6); 
+    background.lineStyle(2, 0x000000, 1); 
+    background.drawRoundedRect(0, 0, props.buttonWidth, props.buttonHeight, 20); 
     background.endFill();
     this.addChild(background);
     
-    // Add a glow effect (shadow)
     const glowFilter = new PIXI.filters.BlurFilter();
-    glowFilter.blur = 5; // Set the blur amount
-    background.filters = [glowFilter]; // Apply the glow effect
+    glowFilter.blur = 5; 
+    background.filters = [glowFilter];
 
-    // Create the bet text with adjustable font size
     this.betText = new PIXI.Text(`Bet: $${this.currentBet}`, {
       fill: "#ffffff",
-      fontSize: this.calculateFontSize(props.buttonWidth), // Dynamically calculate font size
-      fontWeight: "bold", // Make text bold
-      fontFamily: "Arial", // Change font family as needed
+      fontSize: this.calculateFontSize(props.buttonWidth), 
+      fontWeight: "bold", 
+      fontFamily: "Arial", 
     });
 
-    // Center the text in the button
     this.betText.x = (props.buttonWidth - this.betText.width) / 2;
     this.betText.y = (props.buttonHeight - this.betText.height) / 2;
-
-    // Add the text to the button
     this.addChild(this.betText);
-
-    // Create plus and minus buttons
     this.createAdjustmentButtons(props);
-
-    // Create the bet list
     this.createBetList(props);
-
-    // Center the button in the parent container
     this.position.set(props.buttonWidth / 2, props.buttonHeight / 2);
-
-    // Add event listener to toggle bet list visibility
     this.interactive = true;
     this.on("pointerdown", (event) => {
-      event.stopPropagation(); // Prevent click event from bubbling up
+      event.stopPropagation(); 
       this.toggleBetList();
     });
 
-    // Add a click listener to the document to close the dropdown when clicking outside
     document.addEventListener("click", this.onDocumentClick.bind(this));
   }
 
-  // Calculate the font size dynamically based on available width
   private calculateFontSize(availableWidth: number): number {
-    const baseFontSize = 24; // Base font size
+    const baseFontSize = 24; 
     const text = `Bet: $${this.currentBet}`;
     let fontSize = baseFontSize;
 
@@ -82,29 +65,25 @@ interface BetButtonProps {
       fontFamily: "Arial",
     });
 
-    // Decrease font size until it fits within the available width
     while (testText.width > availableWidth && fontSize > 10) {
-      fontSize -= 1; // Decrease font size
+      fontSize -= 1; 
       testText.style.fontSize = fontSize;
     }
 
     return fontSize;
   }
 
-  // Getter for currentBet for testability
   public getCurrentBet() {
     return this.currentBet;
   }
 
-  // Getter for bet list visibility
   public isListVisible() {
     return this.listVisible;
   }
 
   private onDocumentClick(event: MouseEvent) {
-    const mouseX = event.clientX; // Get mouse X position
-    const mouseY = event.clientY; // Get mouse Y position
-
+    const mouseX = event.clientX; 
+    const mouseY = event.clientY; 
     const isInsideButton = this.getBounds().contains(mouseX, mouseY);
 
     if (!isInsideButton) {
@@ -113,8 +92,8 @@ interface BetButtonProps {
   }
 
   private closeBetList() {
-    this.listVisible = false; // Update visibility state
-    this.betList.visible = false; // Hide the dropdown
+    this.listVisible = false; 
+    this.betList.visible = false; 
   }
 
   private createAdjustmentButtons(props: BetButtonProps) {
@@ -126,11 +105,11 @@ interface BetButtonProps {
       fontWeight: "bold",
       fontFamily: "Arial",
     });
-    minusButton.x = 10; // Position on the left
+    minusButton.x = 10; 
     minusButton.y = (props.buttonHeight - minusButton.height) / 2;
-    minusButton.interactive = true; // Set interaction
+    minusButton.interactive = true;
     minusButton.on("pointerdown", (event) => {
-      event.stopPropagation(); // Prevent opening the dropdown
+      event.stopPropagation(); 
       this.decreaseBet();
     });
     buttonContainer.addChild(minusButton);
@@ -141,31 +120,31 @@ interface BetButtonProps {
       fontWeight: "bold",
       fontFamily: "Arial",
     });
-    plusButton.x = props.buttonWidth - plusButton.width - 10; // Position on the right
+    plusButton.x = props.buttonWidth - plusButton.width - 10; 
     plusButton.y = (props.buttonHeight - plusButton.height) / 2;
-    plusButton.interactive = true; // Set interaction
+    plusButton.interactive = true; 
     plusButton.on("pointerdown", (event) => {
-      event.stopPropagation(); // Prevent opening the dropdown
+      event.stopPropagation(); 
       this.increaseBet();
     });
     buttonContainer.addChild(plusButton);
 
-    buttonContainer.y = 0; // Align vertically
+    buttonContainer.y = 0; 
     this.addChild(buttonContainer);
   }
 
   private createBetList(props: BetButtonProps) {
     this.betList = new PIXI.Container();
-    this.betList.visible = false; // Start hidden
+    this.betList.visible = false; 
 
     const listBackground = new PIXI.Graphics();
-    listBackground.beginFill(0x3b82f6); // Tailwind blue-500 for the list background
-    listBackground.drawRoundedRect(0, 0, props.listWidth, props.listHeight, 10); // Rounded corners
+    listBackground.beginFill(0x3b82f6); 
+    listBackground.drawRoundedRect(0, 0, props.listWidth, props.listHeight, 10); 
     listBackground.endFill();
     this.betList.addChild(listBackground);
 
     const itemHeight = 30;
-    const paddingLeft = 10; // Padding for the bet items
+    const paddingLeft = 10; 
     this.bets.forEach((bet, index) => {
       const betItem = new PIXI.Text(`Bet: $${bet}`, {
         fill: "#ffffff",
@@ -174,7 +153,7 @@ interface BetButtonProps {
         fontFamily: "Arial",
       });
       betItem.y = index * itemHeight;
-      betItem.x = paddingLeft; // Set padding from the left
+      betItem.x = paddingLeft; 
       betItem.interactive = true;
 
       betItem.on("pointerdown", (event) => {
@@ -184,7 +163,7 @@ interface BetButtonProps {
       this.betList.addChild(betItem);
     });
 
-    this.betList.y = props.buttonHeight + 5; // Position below the button
+    this.betList.y = props.buttonHeight + 5;
     this.addChild(this.betList);
   }
 
@@ -196,15 +175,15 @@ interface BetButtonProps {
   private selectBet(bet: number, betItem: PIXI.Text) {
     this.currentBet = bet;
     this.betText.text = `Bet: $${this.currentBet}`;
-    this.betText.style.fontSize = this.calculateFontSize(200); // Recalculate font size based on width
-    this.betText.x = (this.width - this.betText.width) / 2; // Center text after font size change
+    this.betText.style.fontSize = this.calculateFontSize(200); 
+    this.betText.x = (this.width - this.betText.width) / 2; 
 
     this.betList.children.forEach((item) => {
       if (item instanceof PIXI.Text) {
-        item.style.fill = "#ADD8E6"; // Change unselected items color
+        item.style.fill = "#ADD8E6";
       }
     });
-    betItem.style.fill = "#ffffff"; // Highlight the selected item
+    betItem.style.fill = "#ffffff"; 
     this.listVisible = false;
     this.betList.visible = false;
   }
@@ -214,8 +193,8 @@ interface BetButtonProps {
     if (currentIndex < this.bets.length - 1) {
       this.currentBet = this.bets[currentIndex + 1];
       this.betText.text = `Bet: $${this.currentBet}`;
-      this.betText.style.fontSize = this.calculateFontSize(200); // Recalculate font size
-      this.betText.x = (this.width - this.betText.width) / 2; // Center text after font size change
+      this.betText.style.fontSize = this.calculateFontSize(200); 
+      this.betText.x = (this.width - this.betText.width) / 2; 
     }
   }
 
@@ -224,8 +203,8 @@ interface BetButtonProps {
     if (currentIndex > 0) {
       this.currentBet = this.bets[currentIndex - 1];
       this.betText.text = `Bet: $${this.currentBet}`;
-      this.betText.style.fontSize = this.calculateFontSize(200); // Recalculate font size
-      this.betText.x = (this.width - this.betText.width) / 2; // Center text after font size change
+      this.betText.style.fontSize = this.calculateFontSize(200); 
+      this.betText.x = (this.width - this.betText.width) / 2; 
     }
   }
 }

@@ -1,42 +1,40 @@
 import * as PIXI from 'pixi.js';
-import BetButton from './components/BetButton'; // Adjust the path as necessary
+import SlotMachine from './components/SlotMachine';
+
+const reelConfigs = [
+  { symbols: [1, 2, 3, 4, 5], speed: 100 },
+  { symbols: [1, 2, 3, 4, 5], speed: 100 },
+  { symbols: [1, 2, 3, 4, 5], speed: 100 },
+];
 
 // Create a new PIXI application
 const app = new PIXI.Application({
-    width: window.innerWidth, // Set to full window width
-    height: window.innerHeight, // Set to full window height
-    backgroundColor: 0x1099bb, // Optional: change the background color
+  width: window.innerWidth,
+  height: window.innerHeight,
+  backgroundColor: 0x1099bb,
 });
 
-
+// Append the Pixi canvas to the HTML document
 document.getElementById('app')?.appendChild(app.view as HTMLCanvasElement);
 
-const betAmounts = [5, 10, 20, 50, 100]; // Example bet amounts
-const buttonWidth = 200; // Desired button width
-const buttonHeight = 50; // Desired button height
-const listWidth = 200; // Desired list width
-const listHeight = 200; // Desired list height
+// Create the SlotMachine instance and pass the PIXI app
+const slotMachine = new SlotMachine(reelConfigs, app);
 
-const betButton = new BetButton({
-    bets: betAmounts,
-    buttonWidth: buttonWidth,
-    buttonHeight: buttonHeight,
-    listWidth: listWidth,
-    listHeight: listHeight,
-});
+// Create the spin button
+const spinButton = document.createElement('button');
+spinButton.textContent = 'Spin Reels';
+spinButton.style.position = 'absolute';
+spinButton.style.top = '20px';
+spinButton.style.left = '20px';
+document.body.appendChild(spinButton);
 
-// Log the created BetButton instance
+// Add click event to the spin button
+spinButton.onclick = async () => {
+  console.log('Button clicked! Spinning the reels...');
+  await slotMachine.spinReels(5000); // Spin for 5 seconds, then stop
+};
 
-// Add the BetButton to the application stage
-app.stage.addChild(betButton);
-
-// Center the BetButton in the middle of the application
-betButton.x = (app.renderer.width - betButton.width) / 2;
-betButton.y = (app.renderer.height - betButton.height) / 2;
-
-// Optional: Adjust the BetButton position on window resize
+// Optional: Adjust the button position on window resize
 window.addEventListener('resize', () => {
-    app.renderer.resize(window.innerWidth, window.innerHeight);
-    betButton.x = (app.renderer.width - betButton.width) / 2;
-    betButton.y = (app.renderer.height - betButton.height) / 2;
+  app.renderer.resize(window.innerWidth, window.innerHeight);
 });
