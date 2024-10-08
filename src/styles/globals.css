@@ -1,7 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+body {
+  background: linear-gradient(to bottom, #00bfff, #00aaff); /* Add a gradient */
+  font-family: Arial, sans-serif; /* Set a font family */
+}
 /* BetButton.css */
 .button {
     background-color: #3b82f6; 
@@ -46,4 +49,44 @@
   .bet-text {
     transition: font-size 0.3s ease; 
   }
-  
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Full height */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+#app {
+    position: relative; /* Allow positioning */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 100%; /* Full height */
+}
+
+button {
+    position: absolute; /* Absolute positioning for the button */
+    top: 75%; /* Adjust the vertical position of the button */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Center adjustment */
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px; /* Font size for the button */
+}
+/* styles.css */
+
+.spin-button {
+  background-color: #f56565; /* red background */
+  color: white; /* white text */
+  font-weight: bold; /* bold text */
+  padding: 12px 24px; /* padding */
+  border-radius: 50px; /* rounded full */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* shadow */
+  border: 2px solid #c53030; /* darker red border */
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* transition effects */
+  cursor: pointer; /* cursor pointer */
+}
+
+.spin-button:hover {
+  background-color: #e53e3e; /* darker red on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* larger shadow on hover */
+}

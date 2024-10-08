@@ -2,39 +2,41 @@ import * as PIXI from 'pixi.js';
 import SlotMachine from './components/SlotMachine';
 
 const reelConfigs = [
-  { symbols: [1, 2, 3, 4, 5], speed: 100 },
-  { symbols: [1, 2, 3, 4, 5], speed: 100 },
-  { symbols: [1, 2, 3, 4, 5], speed: 100 },
+  { symbols: [1, 2, 3, 4,5], speed: 10 }, // Reduced speed for smoother spinning
+  { symbols: [1, 2, 3, 4,5], speed: 10 },
+  { symbols: [1, 2, 3, 4,5], speed: 10 },
+  { symbols: [1, 2, 3, 4,5], speed: 10 },
 ];
 
-// Create a new PIXI application
 const app = new PIXI.Application({
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: 0x1099bb,
+  backgroundColor: 0x333333,
 });
 
-// Append the Pixi canvas to the HTML document
 document.getElementById('app')?.appendChild(app.view as HTMLCanvasElement);
 
-// Create the SlotMachine instance and pass the PIXI app
 const slotMachine = new SlotMachine(reelConfigs, app);
 
-// Create the spin button
 const spinButton = document.createElement('button');
-spinButton.textContent = 'Spin Reels';
+spinButton.textContent = 'Spin the Wheel';
 spinButton.style.position = 'absolute';
-spinButton.style.top = '20px';
-spinButton.style.left = '20px';
+spinButton.style.top = '70%';
+spinButton.style.left = '50%';
+spinButton.style.transform = 'translate(-50%, -50%)';
+spinButton.style.width = '200px';
+spinButton.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+spinButton.style.background = 'red';
+spinButton.style.color = 'white';
+spinButton.style.fontWeight = 'bold';
+spinButton.style.padding = '12px 24px';
+spinButton.style.borderRadius = '50px';
+spinButton.style.border = '2px solid #c53030';
+spinButton.style.transition = 'background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out';
+spinButton.style.cursor = 'pointer';
 document.body.appendChild(spinButton);
 
-// Add click event to the spin button
+// Trigger the spin
 spinButton.onclick = async () => {
-  console.log('Button clicked! Spinning the reels...');
-  await slotMachine.spinReels(5000); // Spin for 5 seconds, then stop
+  await slotMachine.spinReels(3000); // Spin for 3 seconds
 };
-
-// Optional: Adjust the button position on window resize
-window.addEventListener('resize', () => {
-  app.renderer.resize(window.innerWidth, window.innerHeight);
-});
