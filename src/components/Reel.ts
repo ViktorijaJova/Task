@@ -42,27 +42,32 @@ class Reel {
     }
 
     public startSpin(): Promise<void> {
-        this.spinning = true;
-
-        return new Promise((resolve) => {
-            const spin = () => {
-                if (this.spinning) {
-                    this.symbolsContainer.y += this.speed;
-
-                    if (this.symbolsContainer.y >= this.symbolHeight) {
-                        this.symbolsContainer.y -= this.symbolHeight;
-                        this.currentIndex = (this.currentIndex + 1) % this.symbols.length;
-                    }
-
-                    requestAnimationFrame(spin);
-                } else {
-                    this.symbolsContainer.y = 0; // Align symbols when stopping
-                    resolve();
-                }
-            };
-            spin();
-        });
-    }
+      this.spinning = true;
+  
+      // Add blur filter during spin
+      this.symbolsContainer.filters = [new PIXI.filters.BlurFilter(5)]; // Adjust blur strength
+  
+      return new Promise((resolve) => {
+          const spin = () => {
+              if (this.spinning) {
+                  this.symbolsContainer.y += this.speed;
+  
+                  if (this.symbolsContainer.y >= this.symbolHeight) {
+                      this.symbolsContainer.y -= this.symbolHeight;
+                      this.currentIndex = (this.currentIndex + 1) % this.symbols.length;
+                  }
+  
+                  requestAnimationFrame(spin);
+              } else {
+                  this.symbolsContainer.filters = null; // Remove blur when stopping
+                  this.symbolsContainer.y = 0; // Align symbols
+                  resolve();
+              }
+          };
+          spin();
+      });
+  }
+  
 
     public stopSpinOnRandomSymbol(): void {
         this.spinning = false;

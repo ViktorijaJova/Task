@@ -1,11 +1,12 @@
 import * as PIXI from 'pixi.js';
 import SlotMachine from './components/SlotMachine';
+import BetButton from './components/BetButton'; // Import the BetButton class
 
 const reelConfigs = [
-  { symbols: [1, 2, 3, 4,5], speed: 10 }, // Reduced speed for smoother spinning
-  { symbols: [1, 2, 3, 4,5], speed: 10 },
-  { symbols: [1, 2, 3, 4,5], speed: 10 },
-  { symbols: [1, 2, 3, 4,5], speed: 10 },
+  { symbols: [1, 2, 3, 4, 5], speed: 10 },
+  { symbols: [1, 2, 3, 4, 5], speed: 10 },
+  { symbols: [1, 2, 3, 4, 5], speed: 10 },
+  { symbols: [1, 2, 3, 4, 5], speed: 10 },
 ];
 
 const app = new PIXI.Application({
@@ -16,8 +17,10 @@ const app = new PIXI.Application({
 
 document.getElementById('app')?.appendChild(app.view as HTMLCanvasElement);
 
+// Create the slot machine
 const slotMachine = new SlotMachine(reelConfigs, app);
 
+// Create the spin button
 const spinButton = document.createElement('button');
 spinButton.textContent = 'Spin the Wheel';
 spinButton.style.position = 'absolute';
@@ -40,3 +43,17 @@ document.body.appendChild(spinButton);
 spinButton.onclick = async () => {
   await slotMachine.spinReels(3000); // Spin for 3 seconds
 };
+
+// Create the bet button
+const betButton = new BetButton({
+  bets: [1, 5, 10, 20], // Example bet amounts
+  buttonWidth: 150,
+  buttonHeight: 50,
+  listWidth: 150,
+  listHeight: 120,
+});
+
+// Position the Bet Button
+betButton.x = (app.renderer.width - betButton.width) / 2;
+betButton.y = 80; // Adjust the y position as needed
+app.stage.addChild(betButton); // Add Bet Button to the PIXI stage
